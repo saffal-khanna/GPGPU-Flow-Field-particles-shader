@@ -121,6 +121,7 @@ console.log(baseParticlesTexture.image.data)
 
 // Particles variable
 gpgpu.particlesVariable = gpgpu.computation.addVariable('uParticles', gpgpuParticlesShader, baseParticlesTexture)
+gpgpu.particlesVariable.material.uniforms.uTime = new THREE.Uniform()
 console.log('particlesVariable', gpgpu.particlesVariable);
 
 gpgpu.computation.setVariableDependencies(gpgpu.particlesVariable, [ gpgpu.particlesVariable ])
@@ -212,6 +213,7 @@ const tick = () =>
     controls.update()
 
     // Update
+    gpgpu.particlesVariable.material.uniforms.uTime.value = elapsedTime
     gpgpu.computation.compute()
     particles.material.uniforms.uParticlesTexture.value = gpgpu.computation.getCurrentRenderTarget(gpgpu.particlesVariable).texture
 
